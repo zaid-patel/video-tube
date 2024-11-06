@@ -13,11 +13,11 @@ const Home = () => {
   const {query}=useParams() 
   // console.log(query)
   useEffect(()=>{
-    console.log(12)
+    // console.log(12)
     const fetchData=async()=>{
     try {
       
-        if(query=="ok") console.log(123)
+        // if(query=="ok") console.log(123)
         const res=await getAllvideos({query:query?query : "homepage"})
         setVideos(res)
 
@@ -50,8 +50,7 @@ const Home = () => {
         <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
            <span style={{ color: "#FC1503" }}>videos</span>
         </Typography>
-{        console.log(videos)
-}
+
         {videos && <Videos videos={videos} />}
       </Box>
     </Stack>

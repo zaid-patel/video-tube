@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllVideos, getAvideo, publishAVideo } from "../controllers/video.controller.js";
+import { deleteVideo, getAllVideos, getAvideo, publishAVideo } from "../controllers/video.controller.js";
 import { upload } from "../middlewares/multer.js";
 import { verfiyJwt } from "../middlewares/auth.middleware.js";
 import { router as commentRouter} from "./comment.routes.js";
@@ -25,6 +25,8 @@ videoRouter.route("/publishVideo").post(
     videoRouter.route("/all").get(getAllVideos)
 
     videoRouter.route("/getAvideo/:videoId").get(getAvideo)
+    
+    videoRouter.route("/:video_id").delete(deleteVideo)
 
     videoRouter.use("/:video_id/comments/",commentRouter)
 

@@ -10,6 +10,7 @@ const VideoForm = ({
 }) => {
     const [dbVideo,setDbVideo]=useState();
     const navigate=useNavigate()
+    const [loading,setLoading]=useState(false);
   const {register,handleSubmit}=useForm({
        defaultValues:{
         title:video?.title || "",
@@ -20,12 +21,13 @@ const VideoForm = ({
   const submit=async(data)=>{
      if(!video){
        try {
-        
+        setLoading(true);
          const res=await publishAVideo(data);
          console.log(res)
         //  setDbVideo(res)
         //  console.log(dbVideo)
-         if(res?._id) navigate(`/video/${dbVideo._id}`)
+        setLoading(false);
+         if(res?._id) navigate(`/video/${res._id}`)
  
        } catch (error) {
           console.log(error.message)
@@ -38,7 +40,9 @@ const VideoForm = ({
   }
 
   return (
-    <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
+    <div> 
+   {loading?  <div>Uploading.... | This might take some while</div> :
+       <form onSubmit={handleSubmit(submit)} className="flex flex-wrap">
             <div className="w-2/3 px-2">
                 <Input
                     label="Title :"
@@ -90,7 +94,8 @@ const VideoForm = ({
                     {video ? "Update" : "Submit"}
                 </Button>
             </div>
-        </form>
+        </form>}
+</div>
   )
 }
 

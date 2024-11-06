@@ -12,8 +12,10 @@ const Channel = () => {
     
     const fetchData=async()=>{
     try {
-      console.log(userId)
+      // console.log(userId)
         const res=await getAllvideos({userId})
+        // console.log(res);
+        
         setVideos(res)
 
     } catch (err) {
@@ -38,8 +40,7 @@ const Channel = () => {
         <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
            <span style={{ color: "#FC1503" }}>videos</span>
         </Typography>
-{        console.log(videos)
-}
+
         {videos && <Videos videos={videos} />}
       </Box>
     </Stack>

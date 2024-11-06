@@ -15,7 +15,7 @@ function Videos({
             <Box key={video._id}>
                  {/* {console.log(video)} */}
                 <VideoCard  video={video} />
-                {         console.log(video)  }
+                {/* {         console.log(video)  } */}
                 {/* {console.log(1)} */}
             </Box>
         ))

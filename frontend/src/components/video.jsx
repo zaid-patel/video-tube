@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { Box, Typography, Stack, TextField,Button as MuiButton } from '@mui/material'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import { Box, Typography, Stack, TextField,Button as MuiButton, Dialog, DialogTitle, DialogActions } from '@mui/material'
 import { Link } from 'react-router-dom'
 import ReactPlayer from 'react-player'
 import Button from './button'
-import { getAvideo, toggleSubscription, getVideoComments,addComment } from '../api/videos'
+import { getAvideo, toggleSubscription, getVideoComments,addComment, deleteVideo } from '../api/videos'
 import { useSelector } from 'react-redux'
 
 function Video() {
@@ -15,13 +15,17 @@ function Video() {
   const [newComment, setNewComment] = useState('')
   const userData = useSelector((state) => state.auth.userData)
   const username=userData.username
-  const { videoId } = useParams()
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const { videoId } = useParams();
+  const navigate=useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const res = await getAvideo({ videoId })
         setVideo(res[0])
+        console.log(video.owner._id===userData._id);
+        
         const res1 = await getVideoComments(videoId)
         setComments(res1)
       } catch (err) {
@@ -47,7 +51,8 @@ function Video() {
     try {
       const res = await addComment(videoId,newComment)
       if (res) {
-        console.log(res)
+        // console.log(username)
+
         setComments(prev => [...prev, {...res,username}])
         setNewComment('')
       }
@@ -55,6 +60,20 @@ function Video() {
       console.log(error.message)
     }
   }
+
+  const handleDeleteVideo=()=>{
+    console.log(1234);
+    if(deleteVideo(video._id)) navigate('/')
+    setConfirmDelete(false);
+    
+  }
+
+  const openDeleteDialog = () => setConfirmDelete(true);
+  const closeDeleteDialog = () => setConfirmDelete(false);
+  const handleConfirmDelete = () => {
+    console.log('Video deleted');
+    setConfirmDelete(false);
+  };
 
   return (
     <Box minHeight="95vh" p={3}>
@@ -71,9 +90,16 @@ function Video() {
                   {video?.owner?.username}
                 </Typography>
               </Link>
-              <Button onClick={handleClick}>
-                {subscribed ? 'Unsubscribe' : 'Subscribe'}
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <MuiButton variant="contained" onClick={handleClick}>
+                  {subscribed ? 'Unsubscribe' : 'Subscribe'}
+                </MuiButton>
+               { video?.owner?._id===userData?._id && 
+               <MuiButton variant="outlined" color="error" onClick={openDeleteDialog}>
+                  Delete Video
+                </MuiButton>
+               }
+              </Stack>
             </Stack>
             <Stack direction="row" gap="20px" alignItems="center" py={1} px={2}>
               <Typography sx={{ opacity: 0.7 }}>
@@ -94,7 +120,7 @@ function Video() {
               comments.map((comment) => (
                 <Box key={comment._id} sx={{ borderBottom: '1px solid #444', mb: 1, p: 1 }}>
                   <Typography variant="body2" color="#fff">
-                    {comment.owner?.username}:<strong> {comment?.content}</strong>
+                    {comment.owner?.username || 'Anonymous'}:<strong> {comment?.content}</strong>
                   </Typography>
                 </Box>
               ))
@@ -117,8 +143,20 @@ function Video() {
           </Stack>
         </Box>
       </Stack>
-    </Box>
-  )
-}
 
-export default Video
+      <Dialog open={confirmDelete} onClose={closeDeleteDialog}>
+        <DialogTitle>Are you sure you want to delete this video?</DialogTitle>
+        <DialogActions>
+          <MuiButton onClick={closeDeleteDialog} color="primary">
+            Cancel
+          </MuiButton>
+          <MuiButton onClick={handleDeleteVideo} color="error">
+            Delete
+          </MuiButton>
+        </DialogActions>
+      </Dialog>
+    </Box>
+  );
+};
+
+export default Video;

@@ -9,7 +9,7 @@ function VideoCard({video}) {
     <>
 
     <Card sx={{ width: { xs: '100%', sm: '358px', md: "320px", }, boxShadow: "none", borderRadius: 0 }}>
-       {console.log(video)}
+       {/* {console.log(video)} */}
        <Link to={`/video/${video?._id}` }>
       <CardMedia image={video?.thumbnail} alt="thumbnail" 
         sx={{ width: { xs: '100%', sm: '358px'}, height: 180 }} 
