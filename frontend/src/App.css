@@ -1,10 +1,15 @@
+/* Root Container */
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  background: #121212; /* Dark black background */
+  color: #d4af37; /* Gold text for contrast */
+  font-family: 'Arial', sans-serif;
 }
 
+/* Logo Styling */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -12,12 +17,13 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+  filter: drop-shadow(0 0 2em #d4af37aa); /* Gold glow on hover */
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+  filter: drop-shadow(0 0 2em #ffdd00aa); /* React yellow glow */
 }
 
+/* Logo Spin Animation */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -33,10 +39,63 @@
   }
 }
 
+/* Card Styling */
 .card {
   padding: 2em;
+  background: #1e1e1e; /* Dark grey for cards */
+  border: 1px solid #d4af37; /* Gold border for elegance */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  color: #f0f0f0; /* Light grey for text */
+  transition: transform 200ms, box-shadow 200ms;
+}
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.7);
 }
 
+/* Link Styling */
+a {
+  color: #d4af37; /* Gold links */
+  text-decoration: none;
+  transition: color 200ms;
+}
+a:hover {
+  color: #ffdd00; /* Brighter gold on hover */
+}
+
+/* Read the Docs Styling */
 .read-the-docs {
-  color: #888;
+  color: #aaa; /* Light grey for subtlety */
+  font-size: 1rem;
+  margin-top: 1rem;
+}
+
+/* Responsive Layout */
+@media (max-width: 768px) {
+  #root {
+    padding: 1rem;
+  }
+  .card {
+    padding: 1.5em;
+  }
+}
+
+/* Button Styling */
+button {
+  padding: 0.8em 1.5em;
+  background: #d4af37; /* Gold buttons */
+  color: #121212; /* Dark text for contrast */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 200ms, transform 200ms;
+}
+button:hover {
+  background: #ffdd00; /* Brighter gold on hover */
+  transform: scale(1.05);
+}
+button:active {
+  transform: scale(0.95);
 }
