@@ -32,6 +32,7 @@ function Videos({ direction, videos }) {
       ))}
     </Stack>
   );
+
 }
 
 export default Videos;

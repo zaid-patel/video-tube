@@ -3,7 +3,7 @@ import axios from "axios"
 
 const getAllvideos=async({query,userId})=>{
     let videos,error
-    console.log(userId)
+    // console.log(userId)
     await axios.get(`/api/v1/videos/all?query=${query}&userId=${userId}`)
     .then((response)=>{
         // console.log(response.data.data)
@@ -36,7 +36,7 @@ const getAvideo=async({videoId})=>{
 }
 
 const publishAVideo=async(data)=>{
-    console.log(data)
+    // console.log(data)
     let video
     await axios.post('/api/v1/videos/publishVideo',{
         ...data,
@@ -154,6 +154,21 @@ const addComment=async(videoId,content)=>{
     }
  }
 
+
+ const deleteVideo=async(videoId)=>{
+     try {
+        const video_id=videoId;
+        const res=await axios.delete(`/api/v1/videos/${video_id}`);
+        // console.log(res);
+        if(res.status==200) return true
+        return false;
+        
+     } catch (error) {
+        console.log(error.message);
+        
+     }
+ }
+
 export {
     getAllvideos,
     getAvideo,
@@ -163,4 +178,5 @@ export {
     getAllSubscribedChannelVideos,
     getVideoComments,
     addComment,
+    deleteVideo,
 }

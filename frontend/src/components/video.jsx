@@ -17,6 +17,7 @@ function Video() {
   const username = userData.username;
   const { videoId } = useParams();
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -24,6 +25,7 @@ function Video() {
         setVideo(res[0]);
         const res1 = await getVideoComments(videoId);
         setComments(res1);
+
       } catch (err) {
         setError(err.message);
       }
@@ -47,12 +49,28 @@ function Video() {
     try {
       const res = await addComment(videoId, newComment);
       if (res) {
+
         setComments((prev) => [...prev, { ...res, username }]);
         setNewComment('');
+
       }
     } catch (error) {
       console.log(error.message);
     }
+  };
+
+  const handleDeleteVideo=()=>{
+    console.log(1234);
+    if(deleteVideo(video._id)) navigate('/')
+    setConfirmDelete(false);
+    
+  }
+
+  const openDeleteDialog = () => setConfirmDelete(true);
+  const closeDeleteDialog = () => setConfirmDelete(false);
+  const handleConfirmDelete = () => {
+    console.log('Video deleted');
+    setConfirmDelete(false);
   };
 
   return (
@@ -70,9 +88,16 @@ function Video() {
                   {video?.owner?.username}
                 </Typography>
               </Link>
-              <Button onClick={handleClick}>
-                {subscribed ? 'Unsubscribe' : 'Subscribe'}
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <MuiButton variant="contained" onClick={handleClick}>
+                  {subscribed ? 'Unsubscribe' : 'Subscribe'}
+                </MuiButton>
+               { video?.owner?._id===userData?._id && 
+               <MuiButton variant="outlined" color="error" onClick={openDeleteDialog}>
+                  Delete Video
+                </MuiButton>
+               }
+              </Stack>
             </Stack>
             <Stack direction="row" gap="20px" alignItems="center" py={1} px={2}>
               <Typography sx={{ opacity: 0.7, color: '#fff' }}>
@@ -93,7 +118,9 @@ function Video() {
               comments.map((comment) => (
                 <Box key={comment._id} sx={{ borderBottom: '1px solid #444', mb: 1, p: 1 }}>
                   <Typography variant="body2" color="#fff">
+
                     {comment.owner?.username}: <strong>{comment?.content}</strong>
+
                   </Typography>
                 </Box>
               ))
@@ -116,8 +143,21 @@ function Video() {
           </Stack>
         </Box>
       </Stack>
+
+      <Dialog open={confirmDelete} onClose={closeDeleteDialog}>
+        <DialogTitle>Are you sure you want to delete this video?</DialogTitle>
+        <DialogActions>
+          <MuiButton onClick={closeDeleteDialog} color="primary">
+            Cancel
+          </MuiButton>
+          <MuiButton onClick={handleDeleteVideo} color="error">
+            Delete
+          </MuiButton>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }
+
 
 export default Video;

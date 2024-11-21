@@ -7,6 +7,7 @@ import Videos from '../components/Videos';
 import Search from '../components/search';
 
 const Home = () => {
+
   const [error, setError] = useState();
   const [videos, setVideos] = useState();
   const { query } = useParams();

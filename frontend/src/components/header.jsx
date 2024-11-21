@@ -53,7 +53,7 @@ function Header(){
           },
           
       ]
-       console.log(userData);
+      //  console.log(userData);
       
       return(
           
@@ -71,7 +71,7 @@ function Header(){
             <ul className='flex ml-auto'>
   
                  {
-                  // console.log('geader is mounted')
+                  
                     items.map((item,index)=>
                        
                       item.status ? (

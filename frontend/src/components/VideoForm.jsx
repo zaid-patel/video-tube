@@ -33,6 +33,7 @@ const VideoForm = ({ video }) => {
 
     return (
         <form onSubmit={handleSubmit(submit)} className="flex flex-wrap bg-gray-800 p-4 rounded-lg">
+
             <div className="w-2/3 px-2">
                 <Input
                     label="Title:"
@@ -87,5 +88,6 @@ const VideoForm = ({ video }) => {
         </form>
     );
 };
+
 
 export default VideoForm;

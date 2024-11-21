@@ -20,15 +20,17 @@ import { User } from "../models/user.model.js"
        if(!userId && !query){
          throw new ApiError(400,"User id or query required")
        }
-       console.log(query)
-       
+    //    console.log(query)
+       let videos
       try {
-         let videos
+        
+        //  console.log(query + userId);
+         
          if(query=="homepage")
          videos=await Video.find({title:{$regex:"",$options:"i"}}).limit(limit).skip((page-1)*limit)
 
-         else if(userId === void 0){
-            console.log(123)
+         else if(userId){
+            // console.log(123)
           videos=await Video.find({owner:userId})
         // console.log(1234) 
         }
@@ -37,7 +39,7 @@ import { User } from "../models/user.model.js"
 
          }
 
-         console.log(videos)
+        //  console.log(videos+"1234")
          return res.status(200).json(
             new ApiResponse(200,videos,"videos fetched successfully")
          )
@@ -172,10 +174,23 @@ import { User } from "../models/user.model.js"
    })
     
 
+   const deleteVideo=asyncHandler(async(req,res)=>{
+     const {video_id}=req.params;
+     console.log(video_id);
+     const video=await Video.findById(video_id)
+     if(!video) throw new ApiError(400,"video with given id not found")
+     const res1=await Video.findByIdAndDelete(video_id)
+    const res2=await Video.findById(video_id)
+     console.log(res2+" worr");
+      res.status(200).json(new ApiResponse(200,res2,"succ."));
+     
+   })
+
 
 
 export {
     publishAVideo,
     getAvideo,
     getAllVideos,
+    deleteVideo
 }

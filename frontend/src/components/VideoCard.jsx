@@ -27,6 +27,7 @@ function VideoCard({ video }) {
             borderTopRightRadius: '10px',
           }}
         />
+
       </Link>
       <CardContent sx={{ backgroundColor: '#1E1E1E', height: '106px' }}>
         <Link to={`/video/${video?._id}`}>

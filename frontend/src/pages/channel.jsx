@@ -5,6 +5,7 @@ import Videos from '../components/Videos';
 import { getAllvideos } from '../api/videos';
 
 const Channel = () => {
+
   const [error, setError] = useState(null);
   const [videos, setVideos] = useState([]);
   const { userId } = useParams();
@@ -20,6 +21,7 @@ const Channel = () => {
         setError(err.message);
       }
     };
+
 
     fetchData();
   }, [userId]);
@@ -49,6 +51,7 @@ const Channel = () => {
           <span style={{ color: 'black' }}>VIDEOS</span>
         </Typography>
 
+
         {error ? (
           <Typography variant="body1" color="error" sx={{ mt: 2 }}>
             {error}
@@ -62,6 +65,7 @@ const Channel = () => {
             </Typography>
           )
         )}
+
       </Box>
     </Stack>
   );
