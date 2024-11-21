@@ -1,61 +1,55 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { getAllvideos } from '../api/videos'
-import { Stack,Typography,Box } from '@mui/material'
-import Videos from '../components/Videos'
-import { useParams } from 'react-router-dom'
-import Search from '../components/search'
-import { getAllSubscribedChannelVideos } from '../api/videos'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react';
+import { Stack, Typography, Box } from '@mui/material';
+import Videos from '../components/Videos';
+import Search from '../components/search';
+import { useSelector } from 'react-redux';
+import { getAllSubscribedChannelVideos } from '../api/videos';
 
+const SubscribedChannels = () => {
+  const [error, setError] = useState(null);
+  const [videos, setVideos] = useState([]);
+  const userId = useSelector((state) => state.auth.userData._id);
 
-const SubscribedChannels= () => {
-  const [error,setError]=useState()
-  const [videos,setVideos]=useState()
-  const userId=useSelector((state)=>state.auth.userData._id)
-  // console.log(query)
-  useEffect(()=>{
-    // console.log(12)
-    const fetchData=async()=>{
-    try {
-        const res=await getAllSubscribedChannelVideos(userId)
-        setVideos(res.data.data)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getAllSubscribedChannelVideos(userId);
+        setVideos(res.data.data);
+      } catch (error) {
+        console.error(error.message);
+        setError(error.message);
+      }
+    };
 
-    } catch (error) {
-      console.log(error.message)
-      setError(error.message)
-    } 
+    fetchData();
+  }, [userId]);
 
-  }
-  // console.log(123)
-
-  fetchData()
-  },[])
   return (
-    <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
-      
-      {/* <Box sx={{ height: { sx: "auto", md: "92vh" }, borderRight: "1px solid #3d3d3d", px: { sx: 0, md: 2 } }}>
-        <Sidebar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} /> 
-        
-        <Typography className="copyright" variant="body2" sx={{ mt: 1.5, color: "#fff", }}>
-          Copyright © 2024 VideoTube
-        </Typography>
-      </Box>
-       */}
-
-      <Box p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>
-        <Box p={2} sx={{ overflowY: "auto", width:"40vw" }}>
-          < Search />
+    <Stack sx={{ flexDirection: { sx: 'column', md: 'row' } }}>
+      <Box p={2} sx={{ overflowY: 'auto', height: '90vh', flex: 2 }}>
+        <Box p={2} sx={{ overflowY: 'auto', width: '40vw' }}>
+          <Search />
         </Box>
-        <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
-           <span style={{ color: "#FC1503" }}>videos</span>
+        <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: 'white' }}>
+          <span style={{ color: 'black' }}>VIDEOS</span>
         </Typography>
-{        console.log(videos)
-}
-        {videos && <Videos videos={videos} />}
+
+        {error ? (
+          <Typography variant="body1" color="error" sx={{ mt: 2 }}>
+            {error}
+          </Typography>
+        ) : (
+          videos.length > 0 ? (
+            <Videos videos={videos} />
+          ) : (
+            <Typography variant="body1" sx={{ color: 'white', mt: 2 }}>
+              No videos found for your subscribed channels.
+            </Typography>
+          )
+        )}
       </Box>
     </Stack>
   );
-}
+};
 
-export default SubscribedChannels
+export default SubscribedChannels;

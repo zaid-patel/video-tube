@@ -1,61 +1,75 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { getAllvideos } from '../api/videos'
-import { Stack,Typography,Box } from '@mui/material'
-import Videos from '../components/Videos'
-import { useParams } from 'react-router-dom'
-import Search from '../components/search'
-
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useState } from 'react';
+import { Stack, Typography, Box } from '@mui/material';
+import { getAllvideos } from '../api/videos';
+import { useParams } from 'react-router-dom';
+import Videos from '../components/Videos';
+import Search from '../components/search';
 
 const Home = () => {
-  const [error,setError]=useState()
-  const [videos,setVideos]=useState()
-  const {query}=useParams() 
-  // console.log(query)
-  useEffect(()=>{
-    console.log(12)
-    const fetchData=async()=>{
-    try {
-      
-        if(query=="ok") console.log(123)
-        const res=await getAllvideos({query:query?query : "homepage"})
-        setVideos(res)
+  const [error, setError] = useState();
+  const [videos, setVideos] = useState();
+  const { query } = useParams();
 
-    } catch (error) {
-      console.log(error.message)
-      setError(error.message)
-    } 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await getAllvideos({ query: query ? query : 'homepage' });
+        setVideos(res);
+      } catch (error) {
+        console.error(error.message);
+        setError(error.message);
+      }
+    };
+    fetchData();
+  }, [query]);
 
-  }
-  // console.log(123)
-
-  fetchData()
-  },[query])
   return (
-    <Stack sx={{ flexDirection: { sx: "column", md: "row" } }}>
-      
-      {/* <Box sx={{ height: { sx: "auto", md: "92vh" }, borderRight: "1px solid #3d3d3d", px: { sx: 0, md: 2 } }}>
-        <Sidebar selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} /> 
-        
-        <Typography className="copyright" variant="body2" sx={{ mt: 1.5, color: "#fff", }}>
-          Copyright © 2024 VideoTube
-        </Typography>
-      </Box>
-       */}
-
-      <Box p={2} sx={{ overflowY: "auto", height: "90vh", flex: 2 }}>
-        <Box p={2} sx={{ overflowY: "auto", width:"40vw" }}>
-          < Search />
+    <Stack
+      sx={{
+        flexDirection: { sx: 'column', md: 'row' },
+        backgroundColor: '#121212', // Black background
+        minHeight: '100vh',
+        color: '#d4af37', // Gold text
+      }}
+    >
+      <Box
+        p={2}
+        sx={{
+          overflowY: 'auto',
+          height: '90vh',
+          flex: 2,
+        }}
+      >
+        <Box
+          p={2}
+          sx={{
+            overflowY: 'auto',
+            width: '40vw',
+            backgroundColor: '#1e1e1e', // Dark grey for search box container
+            borderRadius: '8px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)',
+          }}
+        >
+          <Search />
         </Box>
-        <Typography variant="h4" fontWeight="bold" mb={2} sx={{ color: "white" }}>
-           <span style={{ color: "#FC1503" }}>videos</span>
+
+        <Typography
+          variant="h4"
+          fontWeight="bold"
+          mb={2}
+          sx={{
+            color: '#f0f0f0', // Light grey for main title
+            marginTop: '1rem',
+          }}
+        >
+          <span style={{ color: '#FFD700' }}>VIDEOS</span>
         </Typography>
-{        console.log(videos)
-}
+
         {videos && <Videos videos={videos} />}
       </Box>
     </Stack>
   );
-}
+};
 
-export default Home
+export default Home;
