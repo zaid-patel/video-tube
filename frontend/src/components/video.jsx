@@ -6,6 +6,7 @@ import ReactPlayer from 'react-player';
 import Button from './button';
 import { getAvideo, toggleSubscription, getVideoComments, addComment } from '../api/videos';
 import { useSelector } from 'react-redux';
+import {Dialog,DialogTitle,DialogActions,DialogContent,DialogContentText} from '@mui/material';
 
 function Video() {
   const [error, setError] = useState();
@@ -16,6 +17,7 @@ function Video() {
   const userData = useSelector((state) => state.auth.userData);
   const username = userData.username;
   const { videoId } = useParams();
+  const [confirmDelete,setConfirmDelete]=useState(false);
 
 
   useEffect(() => {
@@ -119,7 +121,7 @@ function Video() {
                 <Box key={comment._id} sx={{ borderBottom: '1px solid #444', mb: 1, p: 1 }}>
                   <Typography variant="body2" color="#fff">
 
-                    {comment.owner?.username}: <strong>{comment?.content}</strong>
+                    {comment.owner?.username || userData.username}: <strong>{comment?.content}</strong>
 
                   </Typography>
                 </Box>

@@ -32,6 +32,7 @@ const genrateAcessandRefreshToken=async (passeduser)=>{
 const register=asyncHandler(async(req,res)=>{
     // console.log('noober')
     const {fullname,username,password,email}=req.body
+console.log(1111);
 
     if( fullname==="" || username ==="" || email ==="" || password ===""){
         throw new ApiError(409,"All fields are req.")
